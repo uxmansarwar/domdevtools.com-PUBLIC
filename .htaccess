@@ -1,0 +1,40 @@
+#RewriteRule ^test/([^/-]+)(?:/([^-]*))?$ /test.php?one=$1&two=$2 [L]
+
+RewriteEngine on
+RewriteBase /
+
+DirectoryIndex index.php
+
+# This condition mean, if file exist on server than show, that's why we comment it
+# Because, If we uncomment it, it will also show .env file
+# There is issue, if we comment these conditions, than CSS and Js not load in page
+RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+
+#RewriteRule ^(.*)$ index.php?url=$1 [QSA, L]
+#rewriteRule ^(([a-z0-9\-]+/)*[a-z0-9\-]+)$ $1/ [NC,R=301,L]
+RewriteRule ^(.*)$ index.php?page_slug=$1
+
+
+
+ErrorDocument 404 https://domdevtools.com/error
+#ErrorDocument 403 http://localhost/mus_project_starter/paths.php
+
+# <Files ".en*|.gitignore|adx.txt|composer.json|composer.lock|LICENSE|README.md">
+
+<Files ".en*">
+    Require all denied
+</Files>
+
+<Files "LICENSE">
+    Require all denied
+</Files>
+
+# Prevent viewing of .htaccess file
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
+# Prevent directory listings
+Options All -Indexes
